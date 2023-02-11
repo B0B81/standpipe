@@ -12,6 +12,9 @@ datasource db {
 
 model User {
   id       String    @id @unique
+  firstname     String?
+  lastname String?   
+  email    String @unique
   session  Session[]
   Key      Key[]
 
@@ -38,4 +41,44 @@ model Key {
 
   @@index([user_id])
   @@map("key")
+}
+
+model Customer {
+  id            Int  @id @default(autoincrement())
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  firstname     String?
+  lastname      String
+  zip           Int?
+  city          String?
+  street        String?
+  housenumber   String?
+  email         String?
+  iban          String?
+  transactions  Transaction[]
+}
+
+model Standpipe {
+  id              Int  @id @default(autoincrement())
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  number          String?
+  manufacturer    String?
+  productionYear  Int?
+  meteringcode    String?
+  transactions    Transaction[]
+}
+
+model Transaction {
+  id                        Int @id @default(autoincrement())
+  Customers                 Customer @relation(references: [id], fields: [customerId])
+  customerId                Int
+  Standpipes                Standpipe @relation(references: [id], fields: [standpipeId])
+  standpipeId               Int
+  date_start                DateTime
+  date_end                  DateTime?
+  metervalue_initial        Decimal
+  metervalue_return         Decimal
+  deposit                   Boolean
+  dailybase                 Boolean @default(true)
 }
