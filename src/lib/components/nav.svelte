@@ -1,11 +1,6 @@
 <script lang="ts">
-	import '../app.postcss'
-	import { Toaster } from 'svelte-french-toast'
-	import Nav from '$lib/components/nav.svelte'
-	import type { PageData } from './$types'
 	export let data: PageData
 </script>
-
 
 <div class="min-h-full">
 	<div class="navbar bg-base-200">
