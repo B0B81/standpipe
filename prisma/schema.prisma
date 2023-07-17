@@ -77,6 +77,16 @@ model Standpipe {
   @@map("standpipes")
 }
 
+model Manufacturer {
+  id             Int           @id @default(autoincrement())
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+  companyname    String?
+  userId         String
+
+  @@map("manufacturers")
+}
+
 model Transaction {
   id                 Int       @id @default(autoincrement())
   customer           Customer  @relation(references: [id], fields: [customerId])

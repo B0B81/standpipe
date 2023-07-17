@@ -72,19 +72,49 @@
 		<form action="?/createStandpipe" method="POST">
 			<h3>Neues Standrohr</h3>
 			<div class="form-control w-full max-w-xs">
-				<label for="standpipeNr"  class="label">
-					<span class="label-text">Nummer</span>
-			  	</label>
-				<input type="text" id="standpipeNr" name="standpipeNr" bind:value={$form.standpipeNr} class="input input-bordered w-full max-w-xs" />
+				<label
+					for="type"
+					class="relative block overflow-hidden border-b border-gray-200 pt-3 focus-within:border-blue-600"
+					>
+					<input
+						type="number"
+						id="standpipeNr"
+						name="standpipeNr"
+						placeholder="Nummer"
+						bind:value={$form.standpipeNr}
+						class="peer h-8 w-full border-none bg-transparent p-0 placeholder-transparent focus:border-transparent focus:outline-none focus:ring-0 sm:text-sm"
+					/>
+
+					<span
+					class="absolute left-0 top-2 -translate-y-1/2 text-xs text-gray-700 transition-all peer-placeholder-shown:top-1/2 peer-placeholder-shown:text-sm peer-focus:top-2 peer-focus:text-xs"
+					>
+						Nummer
+					</span>
+				</label>
 				{#if $errors.standpipeNr}
 					<p class="text-red-500 text-xs">{$errors.standpipeNr}</p>
 				{/if}
 			</div>
 			<div class="form-control w-full max-w-xs">
-				<label for="manufacturer" class="label">
-					<span class="label-text">Hersteller</span>
-			  	</label>
-				<input type="text" id="manufacturer" name="manufacturer" bind:value={$form.manufacturer} class="input input-bordered w-full max-w-xs" />
+				<label
+					for="type"
+					class="relative block overflow-hidden border-b border-gray-200 pt-3 focus-within:border-blue-600"
+					>
+					<input
+						type="text"
+						id="manufacturer"
+						name="manufacturer"
+						placeholder="Hersteller"
+						bind:value={$form.manufacturer}
+						class="peer h-8 w-full border-none bg-transparent p-0 placeholder-transparent focus:border-transparent focus:outline-none focus:ring-0 sm:text-sm"
+					/>
+
+					<span
+					class="absolute left-0 top-2 -translate-y-1/2 text-xs text-gray-700 transition-all peer-placeholder-shown:top-1/2 peer-placeholder-shown:text-sm peer-focus:top-2 peer-focus:text-xs"
+					>
+						Hersteller
+					</span>
+				</label>
 				{#if $errors.manufacturer}
 					<p class="text-red-500 text-xs">{$errors.manufacturer}</p>
 				{/if}
