@@ -1,11 +1,19 @@
 <script lang="ts">
+	import { page } from '$app/stores'
 	import { superForm } from "sveltekit-superforms/client"
 	import SuperDebug from "sveltekit-superforms/client/SuperDebug.svelte"
 	import { standpipeSchema } from '$lib/zod/schema'
 
 	export let data
+	let pageSize = 10
+	//Fülle totalItems mit Anzahl Standpipes aus +page.server.ts
+	$: totalItems = data.totalStandpipes;
+	$: totalPages = Math.ceil(totalItems / pageSize)
+	$: currentPage = Number($page.params.page) -1
+	// $: console.log(totalPages)
 	let isModalOpen = false
-	$: ({ standpipes } = data)
+
+	$: ({ standpipes, manufacturers } = data)
 
 	const { form, errors, enhance, constraints} = superForm(data.form, { 
 	  taintedMessage: "Sicher das du abbrechen möchtest?", 
@@ -61,6 +69,15 @@
 	</div>	
 </div>
 
+<div>
+	{#each Array(totalPages) as _, idx}
+		<a href="{idx + 1}" class={currentPage === idx ? 'text-emerald-300' : ''}>
+			{idx +1}
+		</a>
+	{/each}
+</div>	
+
+
 <!-- <SuperDebug data={$form} /> -->
 {#if data.user}
 <button class="btn modal-button" on:click={()=>isModalOpen = true}>open modal</button>
@@ -97,17 +114,14 @@
 			</div>
 			<div class="form-control w-full max-w-xs">
 				<label
-					for="type"
+					for="manufacturer"
 					class="relative block overflow-hidden border-b border-gray-200 pt-3 focus-within:border-blue-600"
 					>
-					<input
-						type="text"
-						id="manufacturer"
-						name="manufacturer"
-						placeholder="Hersteller"
-						bind:value={$form.manufacturer}
-						class="peer h-8 w-full border-none bg-transparent p-0 placeholder-transparent focus:border-transparent focus:outline-none focus:ring-0 sm:text-sm"
-					/>
+					<select bind:value={$form.manufacturer} id="manufacturer" name="manufacturer" placeholder="Hersteller" class="peer h-8 w-full border-none bg-transparent p-0 placeholder-transparent focus:border-transparent focus:outline-none focus:ring-0 sm:text-sm">
+						{#each manufacturers as manufacturer}
+							<option value={manufacturer.companyname}>{manufacturer.companyname}</option>
+						{/each}
+					</select>
 
 					<span
 					class="absolute left-0 top-2 -translate-y-1/2 text-xs text-gray-700 transition-all peer-placeholder-shown:top-1/2 peer-placeholder-shown:text-sm peer-focus:top-2 peer-focus:text-xs"

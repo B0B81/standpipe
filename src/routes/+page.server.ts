@@ -4,15 +4,56 @@ import { fail, redirect } from "@sveltejs/kit"
 import { standpipeSchema } from '$lib/zod/schema'
 import { superValidate } from "sveltekit-superforms/server"
 
-export const load: PageServerLoad = async (event) => {
-	const standpipes = await prisma.standpipe.findMany({
-		orderBy: [
-			{standpipeNr: 'asc',}
-		],
-	})
-	const form = await superValidate(event, standpipeSchema)
+// export const load: PageServerLoad = async (event) => {
+// 	const standpipes = await prisma.standpipe.findMany({
+// 		orderBy: [
+// 			{standpipeNr: 'asc',}
+// 		],
+// 	})
+
+// 	const manufacturers = await prisma.manufacturer.findMany({
+// 		orderBy: [
+// 			{companyname: 'asc',}
+// 		],
+// 	})
+
+// 	const form = await superValidate(event, standpipeSchema)
+
+// 	return {
+// 		standpipes,
+// 		manufacturers,
+// 		form
+// 	}
+// }
+
+export async function load( { params }) {
+	const page = Number(params.page)
+	async function getStandpipes() {
+		const limit = 10
+		const standpipes = await prisma.standpipe.findMany({
+			skip: (page -1) * limit,
+			take: limit,
+			orderBy: [
+				{standpipeNr: 'asc',}
+			],
+		})
+		return standpipes
+	}
+	
+	async function getManufacturers() {
+		const manufacturers = await prisma.manufacturer.findMany({
+			orderBy: [
+				{companyname: 'asc',}
+			],
+		})
+		return manufacturers
+	}
+	const form = await superValidate(standpipeSchema)
+
 	return {
-		standpipes,
+		standpipes: getStandpipes(),
+		totalStandpipes: prisma.standpipe.count(),
+		manufacturers: getManufacturers(),
 		form
 	}
 }
