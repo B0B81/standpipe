@@ -4,28 +4,6 @@ import { fail, redirect } from "@sveltejs/kit"
 import { standpipeSchema } from '$lib/zod/schema'
 import { superValidate } from "sveltekit-superforms/server"
 
-// export const load: PageServerLoad = async (event) => {
-// 	const standpipes = await prisma.standpipe.findMany({
-// 		orderBy: [
-// 			{standpipeNr: 'asc',}
-// 		],
-// 	})
-
-// 	const manufacturers = await prisma.manufacturer.findMany({
-// 		orderBy: [
-// 			{companyname: 'asc',}
-// 		],
-// 	})
-
-// 	const form = await superValidate(event, standpipeSchema)
-
-// 	return {
-// 		standpipes,
-// 		manufacturers,
-// 		form
-// 	}
-// }
-
 export async function load( { params }) {
 	const page = Number(params.page)
 	async function getStandpipes() {
